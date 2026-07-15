@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://adoc.thispy.top/sitemap.xml

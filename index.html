@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AusDungeon - Paper 1.21.8 线性阶段式 PvE 副本框架官方文档">
+  <meta name="theme-color" content="#10130f">
+  <title>AusDungeon 文档</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">跳到正文</a>
+  <header class="topbar">
+    <button class="icon-button mobile-only" id="menuButton" aria-label="打开导航" title="打开导航">☰</button>
+    <a class="brand" href="#overview" aria-label="AusDungeon 文档首页">
+      <span class="brand-mark" aria-hidden="true">AD</span>
+      <span><strong>AusDungeon</strong><small>Paper 副本框架</small></span>
+    </a>
+    <div class="top-actions">
+      <label class="search" aria-label="搜索文档">
+        <span aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="搜索文档…" autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+      <a class="icon-button" id="githubLink" href="https://github.com/YOUR_NAME/AusDungeon" target="_blank" rel="noreferrer" aria-label="GitHub 仓库" title="GitHub 仓库">GH</a>
+      <button class="icon-button" id="themeButton" aria-label="切换主题" title="切换主题">◐</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <nav aria-label="文档导航">
+        <p class="nav-label">开始使用</p>
+        <a href="#overview">插件概览</a>
+        <a href="#requirements">环境与依赖</a>
+        <a href="#install">安装与启动</a>
+        <a href="#quickstart">快速开始</a>
+        <p class="nav-label">服主管理</p>
+        <a href="#worlds">模板与实例世界</a>
+        <a href="#commands">命令参考</a>
+        <a href="#permissions">权限节点</a>
+        <a href="#workflow">副本生命周期</a>
+        <p class="nav-label">配置参考</p>
+        <a href="#config">config.yml</a>
+        <a href="#dungeons">dungeons.yml</a>
+        <a href="#messages">messages.yml</a>
+        <a href="#mythic">MythicMobs</a>
+        <p class="nav-label">运维</p>
+        <a href="#testing">测试清单</a>
+        <a href="#troubleshooting">故障排查</a>
+        <a href="#deploy">GitHub Pages</a>
+        <a href="#limits">一期限制</a>
+      </nav>
+      <div class="version-box"><span>当前文档</span><strong>v1.0.0</strong><small>Paper 1.21.8 · Java 21</small></div>
+    </aside>
+
+    <main id="content">
+      <section class="hero doc-section" id="overview" data-search="介绍 概览 AusDungeon AD 副本">
+        <div class="hero-copy">
+          <span class="eyebrow">AUSDUNGEON DOCUMENTATION</span>
+          <h1>构建清晰、可控的<br><em>Paper 副本流程</em></h1>
+          <p>面向 Paper 1.21.8 的线性阶段式 PvE 副本框架。负责实例隔离、区域触发、阶段推进、MythicMobs 调度与奖励结算。</p>
+          <div class="hero-actions">
+            <a class="primary-button" href="#quickstart">开始配置 <span>→</span></a>
+            <a class="secondary-button" href="#commands">查看命令</a>
+          </div>
+          <div class="compat-line"><span>Java 21</span><span>Paper 1.21.8</span><span>MythicMobs 5.x</span></div>
+        </div>
+        <div class="flow-panel" aria-label="副本流程图">
+          <div class="flow-header"><span>INSTANCE LIFECYCLE</span><i>LIVE</i></div>
+          <ol class="flow-list">
+            <li><b>01</b><span><strong>WAITING</strong><small>菜单匹配与实例创建</small></span></li>
+            <li><b>02</b><span><strong>COUNTDOWN</strong><small>满足人数，等待开局</small></span></li>
+            <li><b>03</b><span><strong>RUNNING</strong><small>区域触发与线性推进</small></span></li>
+            <li><b>04</b><span><strong>COMPLETED</strong><small>奖励结算与世界回收</small></span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="doc-section" id="requirements" data-search="环境 依赖 版本 Paper Java MythicMobs WorldEdit WorldGuard">
+        <div class="section-heading"><span>01</span><div><p>FOUNDATION</p><h2>环境与依赖</h2></div></div>
+        <div class="notice important"><strong>硬性要求</strong><p>服务端必须使用 Java 21 和 Paper 1.21.8。MythicMobs 是硬依赖，未启用时 AusDungeon 会拒绝启动。</p></div>
+        <div class="data-table">
+          <div class="table-row table-head"><span>组件</span><span>建议版本</span><span>关系</span></div>
+          <div class="table-row"><strong>Paper</strong><code>1.21.8 build 60</code><span class="tag required">必需</span></div>
+          <div class="table-row"><strong>Java</strong><code>21</code><span class="tag required">必需</span></div>
+          <div class="table-row"><strong>MythicMobs</strong><code>5.12.1</code><span class="tag required">必需</span></div>
+          <div class="table-row"><strong>Multiverse-Core</strong><code>5.7.2</code><span class="tag optional">推荐</span></div>
+          <div class="table-row"><strong>WorldEdit</strong><code>7.3.16</code><span class="tag optional">推荐</span></div>
+          <div class="table-row"><strong>WorldGuard</strong><code>7.0.14</code><span class="tag optional">推荐</span></div>
+          <div class="table-row"><strong>PlaceholderAPI</strong><code>2.12.3</code><span class="tag optional">可选</span></div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="install" data-search="安装 启动 plugins jar EULA">
+        <div class="section-heading"><span>02</span><div><p>INSTALLATION</p><h2>安装与启动</h2></div></div>
+        <ol class="steps">
+          <li><span>1</span><div><strong>关闭服务器</strong><p>不要在运行中的服务器直接替换插件 JAR。</p></div></li>
+          <li><span>2</span><div><strong>安装插件</strong><p>将 AusDungeon、MythicMobs 和其他依赖放入 <code>plugins/</code>。</p></div></li>
+          <li><span>3</span><div><strong>启动 Paper</strong><p>首次启动生成 <code>plugins/AusDungeon/</code> 配置目录。</p></div></li>
+          <li><span>4</span><div><strong>检查日志</strong><p>控制台应出现 <code>AusDungeon enabled with 1 dungeon(s).</code></p></div></li>
+        </ol>
+        <div class="code-block"><div class="code-title"><span>PowerShell</span><button class="copy-button">复制</button></div><pre><code>java -Xms1G -Xmx2G -jar paper-1.21.8-60.jar --nogui</code></pre></div>
+      </section>
+
+      <section class="doc-section" id="quickstart" data-search="快速开始 创建副本 lobby spawn stage region mob barrier reward save">
+        <div class="section-heading"><span>03</span><div><p>QUICK START</p><h2>十分钟创建首个副本</h2></div></div>
+        <p class="lead">以下流程创建一个名为 <code>ruins</code> 的两阶段副本。先在模板世界完成地图，再按玩家当前位置记录配置。</p>
+        <div class="command-sequence">
+          <div><b>01</b><span><strong>创建并选中副本</strong><code>/ad create ruins</code></span></div>
+          <div><b>02</b><span><strong>设置等待点与开局点</strong><code>/ad set lobby</code><code>/ad set spawn</code></span></div>
+          <div><b>03</b><span><strong>创建阶段</strong><code>/ad stage add wave1</code></span></div>
+          <div><b>04</b><span><strong>设置触发区域</strong><code>/ad set pos1</code><code>/ad stage setregion wave1</code></span></div>
+          <div><b>05</b><span><strong>登记刷怪</strong><code>/ad stage addspawn wave1 center</code><code>/ad stage addmob wave1 SkeletonKingMinion 3 center</code></span></div>
+          <div><b>06</b><span><strong>登记障碍与奖励</strong><code>/ad stage addbarrier wave1</code><code>/ad reward addcmd give {player} diamond 3</code></span></div>
+          <div><b>07</b><span><strong>持久化</strong><code>/ad save</code></span></div>
+        </div>
+        <div class="notice"><strong>区域设置方式</strong><p>在第一个角执行 <code>/ad set pos1</code>，移动到对角后执行 <code>/ad stage setregion &lt;stageId&gt;</code>。也可先执行 <code>/ad set pos2</code> 检查选点；<code>/ad pos1</code> 仍可作为简写。当前版本不直接读取 WorldEdit 选区。</p></div>
+      </section>
+
+      <section class="doc-section" id="worlds" data-search="模板世界 实例世界 克隆 删除 Multiverse">
+        <div class="section-heading"><span>04</span><div><p>WORLD MODEL</p><h2>模板与实例世界</h2></div></div>
+        <div class="split-content">
+          <div><p class="lead">配置坐标属于模板世界。每次创建实例，插件会复制模板世界目录并加载一个独立世界。</p>
+            <ul class="check-list"><li>模板世界必须已加载</li><li>实例结束后自动卸载并删除</li><li>不应在实例世界保存永久数据</li><li>使用小型专用世界降低复制延迟</li></ul>
+          </div>
+          <div class="world-diagram"><div><small>TEMPLATE</small><strong>dungeon_world</strong></div><span>复制</span><div><small>INSTANCE</small><strong>world_ad_ruins-1</strong></div></div>
+        </div>
+        <div class="code-block"><div class="code-title"><span>Multiverse-Core</span><button class="copy-button">复制</button></div><pre><code>/mv import dungeon_world normal
+/mvtp dungeon_world</code></pre></div>
+      </section>
+
+      <section class="doc-section" id="commands" data-search="命令 command leave exit start stop fail nextstage info debug reload save">
+        <div class="section-heading"><span>05</span><div><p>COMMAND REFERENCE</p><h2>命令参考</h2></div></div>
+        <div class="tabs" role="tablist"><button class="tab active" data-tab="player">玩家</button><button class="tab" data-tab="editor">编辑</button><button class="tab" data-tab="admin">管理</button></div>
+        <div class="tab-panel active" data-panel="player">
+          <div class="command-row"><code>/ad</code><span>打开副本菜单</span></div>
+          <div class="command-row"><code>/ad leave</code><span>退出当前副本，恢复生存并返回主世界</span></div>
+          <div class="command-row"><code>/ad exit</code><span><code>leave</code> 的别名</span></div>
+        </div>
+        <div class="tab-panel" data-panel="editor">
+          <div class="command-row"><code>/ad create &lt;id&gt;</code><span>创建并选中副本</span></div>
+          <div class="command-row"><code>/ad edit &lt;id&gt;</code><span>切换当前编辑副本</span></div>
+          <div class="command-row"><code>/ad set lobby|spawn|pos1|pos2</code><span>记录当前位置或区域选点</span></div>
+          <div class="command-row"><code>/ad stage add &lt;stageId&gt;</code><span>追加线性阶段</span></div><div class="command-row"><code>/ad stage addfirst &lt;stageId&gt;</code><span>添加无怪开场阶段</span></div>
+          <div class="command-row"><code>/ad stage setregion &lt;stageId&gt;</code><span>设置触发区域</span></div>
+          <div class="command-row"><code>/ad stage addspawn &lt;stageId&gt; &lt;spawnId&gt;</code><span>添加刷怪点</span></div>
+          <div class="command-row"><code>/ad stage addmob &lt;stageId&gt; &lt;mobId&gt; &lt;amount&gt; &lt;spawnId&gt;</code><span>添加怪物定义</span></div>
+          <div class="command-row"><code>/ad stage addbarrier &lt;stageId&gt;</code><span>登记看向的障碍方块</span></div><div class="command-row"><code>/ad stage story &lt;stageId&gt; freeze &lt;seconds&gt;</code><span>设置固定玩家时长</span></div><div class="command-row"><code>/ad stage story &lt;stageId&gt; interval &lt;ticks&gt;</code><span>设置台词间隔</span></div><div class="command-row"><code>/ad stage story &lt;stageId&gt; addline &lt;text...&gt;</code><span>追加剧情台词</span></div><div class="command-row"><code>/ad stage story &lt;stageId&gt; clear</code><span>清空剧情台词</span></div>
+          <div class="command-row"><code>/ad reward addcmd &lt;command...&gt;</code><span>添加控制台奖励命令</span></div>
+          <div class="command-row"><code>/ad save</code><span>保存到 dungeons.yml</span></div>
+        </div>
+        <div class="tab-panel" data-panel="admin">
+          <div class="command-row"><code>/ad start &lt;dungeonId&gt;</code><span>立即创建管理员测试实例</span></div>
+          <div class="command-row"><code>/ad stop &lt;instanceId&gt;</code><span>强制终止并判定失败</span></div>
+          <div class="command-row"><code>/ad nextstage &lt;instanceId&gt;</code><span>强制完成当前已触发阶段</span></div>
+          <div class="command-row"><code>/ad fail &lt;instanceId&gt;</code><span>强制判定失败</span></div>
+          <div class="command-row"><code>/ad info &lt;instanceId&gt;</code><span>查看状态、玩家与阶段</span></div>
+          <div class="command-row"><code>/ad reload</code><span>无活动实例时重载配置</span></div>
+          <div class="command-row"><code>/ad debug on|off</code><span>开关调试配置</span></div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="permissions" data-search="权限 permission admin use OP">
+        <div class="section-heading"><span>06</span><div><p>ACCESS CONTROL</p><h2>权限节点</h2></div></div>
+        <div class="permission-grid"><article><code>ausdungeon.use</code><strong>玩家功能</strong><p>打开菜单、加入和退出副本。默认所有玩家拥有。</p></article><article><code>ausdungeon.admin</code><strong>管理功能</strong><p>编辑配置、测试、强制推进和终止实例。默认 OP 拥有。</p></article></div>
+      </section>
+
+      <section class="doc-section" id="workflow" data-search="生命周期 WAITING COUNTDOWN RUNNING COMPLETED FAILED CLOSING 死亡 旁观">
+        <div class="section-heading"><span>07</span><div><p>RUNTIME</p><h2>副本生命周期</h2></div></div>
+        <div class="state-grid">
+          <article><span>WAITING</span><p>等待玩家，可继续加入。</p></article><article><span>COUNTDOWN</span><p>满足最低人数，倒计时中。</p></article><article><span>RUNNING</span><p>实例锁定，阶段推进中。</p></article><article><span>COMPLETED</span><p>Boss/末阶段完成，发放奖励。</p></article><article><span>FAILED</span><p>全员死亡、退出或管理员终止。</p></article><article><span>CLOSING</span><p>传送玩家、卸载并删除世界。</p></article>
+        </div>
+        <div class="notice warning"><strong>死亡与退出</strong><p>死亡玩家进入旁观模式，不再参与区域全员判定。可使用 <code>/ad leave</code> 立即退出。通关或失败后默认等待 5 秒关闭，期间同样可主动退出。</p></div>
+      </section>
+
+      <section class="doc-section" id="config" data-search="config return-world return-delay debug">
+        <div class="section-heading"><span>08</span><div><p>CONFIGURATION</p><h2>config.yml</h2></div></div>
+        <div class="code-block"><div class="code-title"><span>plugins/AusDungeon/config.yml</span><button class="copy-button">复制</button></div><pre><code>return-world: world
+return-delay-seconds: 5
+keep-inventory-on-dungeon-death: true
+debug: false</code></pre></div>
+        <div class="notice"><strong>阶段结束剧情</strong><p>在阶段中配置 <code>end-story.freeze-seconds</code>、<code>line-interval-ticks</code> 和 <code>lines</code>。20 ticks 等于 1 秒，台词支持 MiniMessage 颜色标签。</p></div><div class="field-list"><div><code>return-world</code><span>结束后传回的世界</span></div><div><code>return-delay-seconds</code><span>通关/失败到销毁的延迟秒数</span></div><div><code>keep-inventory-on-dungeon-death</code><span>副本死亡保留背包和经验</span></div><div><code>debug</code><span>调试开关</span></div></div>
+      </section>
+
+      <section class="doc-section" id="dungeons" data-search="dungeons yaml stages trigger region spawn mobs barriers rewards boss-stage next-stage">
+        <div class="section-heading"><span>09</span><div><p>DUNGEON SCHEMA</p><h2>dungeons.yml</h2></div></div>
+        <div class="code-block tall"><div class="code-title"><span>最小完整示例</span><button class="copy-button">复制</button></div><pre><code>dungeons:
+  ancient_ruins:
+    display-name: "Ancient Ruins"
+    description: "A two-stage example dungeon"
+    min-players: 1
+    max-players: 4
+    countdown-seconds: 60
+    lobby: { world: dungeon_world, x: 0.5, y: 65, z: 0.5, yaw: 0, pitch: 0 }
+    spawn: { world: dungeon_world, x: 5.5, y: 65, z: 0.5, yaw: 0, pitch: 0 }
+    stages:
+      courtyard:
+        display-name: "Ruined Courtyard"
+        trigger-region:
+          world: dungeon_world
+          min: { x: 10, y: 60, z: -5 }
+          max: { x: 20, y: 75, z: 5 }
+        spawn-points:
+          center: { world: dungeon_world, x: 15.5, y: 65, z: 0.5 }
+        mobs:
+          - { mythic-mob-id: SkeletonKingMinion, amount: 3, spawn-point: center, delay-ticks: 0 }
+        barriers:
+          0: { world: dungeon_world, x: 22, y: 65, z: 0 }
+        next-stage: throne_room
+        boss-stage: false
+      throne_room:
+        display-name: "Throne Room"
+        trigger-region:
+          world: dungeon_world
+          min: { x: 25, y: 60, z: -5 }
+          max: { x: 40, y: 75, z: 5 }
+        spawn-points:
+          boss: { world: dungeon_world, x: 35.5, y: 65, z: 0.5 }
+        mobs:
+          - { mythic-mob-id: SkeletonKing, amount: 1, spawn-point: boss }
+        barriers: {}
+        boss-stage: true
+    rewards:
+      commands:
+        - "give {player} diamond 3"</code></pre></div>
+        <div class="schema-grid"><article><code>trigger-region</code><p>所有在线、非旁观实例玩家全部进入后触发。</p></article><article><code>mobs</code><p>只统计由本插件登记的 MythicMob UUID。</p></article><article><code>barriers</code><p>清怪后直接将这些坐标替换为 AIR。</p></article><article><code>boss-stage</code><p>完成该阶段后直接通关并结算。</p></article><article><code>end-story</code><p>清怪后固定玩家并按间隔向副本聊天框播放剧情，结束后再开路。</p></article></div>
+      </section>
+
+      <section class="doc-section" id="messages" data-search="messages MiniMessage 消息 title actionbar chat 变量">
+        <div class="section-heading"><span>10</span><div><p>MESSAGING</p><h2>messages.yml</h2></div></div>
+        <p class="lead">消息使用 MiniMessage 格式，并且仅发送给当前实例玩家。支持聊天栏、ActionBar 与 Title / Subtitle。</p>
+        <div class="code-block"><div class="code-title"><span>MiniMessage</span><button class="copy-button">复制</button></div><pre><code>countdown: "&lt;gold&gt;Dungeon starts in &lt;yellow&gt;{seconds}&lt;/yellow&gt; seconds.&lt;/gold&gt;"
+stage-complete: "&lt;green&gt;Stage cleared: {stage}&lt;/green&gt;"
+failed-subtitle: "&lt;gray&gt;Reason: {reason}&lt;/gray&gt;"</code></pre></div>
+        <div class="variable-line"><code>{player}</code><code>{current}</code><code>{max}</code><code>{seconds}</code><code>{stage}</code><code>{reason}</code></div>
+      </section>
+
+      <section class="doc-section" id="mythic" data-search="MythicMobs mob ID spawn skills boss">
+        <div class="section-heading"><span>11</span><div><p>INTEGRATION</p><h2>MythicMobs 对接</h2></div></div>
+        <div class="split-content"><div><p class="lead">AusDungeon 只负责“何时、何地、生成多少只”。怪物技能、属性、装备和掉落都在 MythicMobs 中定义。</p><ul class="check-list"><li>ID 区分大小写</li><li>先使用 MythicMobs 命令验证怪物可生成</li><li>只有 AD 登记的怪物死亡会推进阶段</li></ul></div><div class="code-block compact"><div class="code-title"><span>验证怪物</span><button class="copy-button">复制</button></div><pre><code>/mm mobs spawn SkeletonKing 1</code></pre></div></div>
+      </section>
+
+      <section class="doc-section" id="testing" data-search="测试 smoke test checklist">
+        <div class="section-heading"><span>12</span><div><p>VALIDATION</p><h2>上线前测试清单</h2></div></div>
+        <div class="test-list"><label><input type="checkbox">菜单显示副本且点击可加入</label><label><input type="checkbox">达到最低人数后开始倒计时</label><label><input type="checkbox">RUNNING 后拒绝后来玩家</label><label><input type="checkbox">全员进入区域后生成怪物</label><label><input type="checkbox">非登记怪物死亡不推进阶段</label><label><input type="checkbox">清怪后障碍变为 AIR</label><label><input type="checkbox">Boss 死亡后奖励正常执行</label><label><input type="checkbox">死亡玩家可用 /ad leave 退出</label><label><input type="checkbox">通关/失败后实例世界被删除</label></div>
+      </section>
+
+      <section class="doc-section" id="troubleshooting" data-search="故障 问题 错误 不刷怪 世界不可用 奖励">
+        <div class="section-heading"><span>13</span><div><p>TROUBLESHOOTING</p><h2>故障排查</h2></div></div>
+        <div class="accordion">
+          <details><summary>点击菜单提示世界不可用</summary><p>确认 <code>dungeons.yml</code> 中的模板世界已加载。使用 Multiverse-Core 导入后再测试。</p></details>
+          <details><summary>全员进入区域但没有刷怪</summary><p>确认 Y 高度、当前阶段、刷怪点以及 MythicMob ID。先用 <code>/mm mobs spawn</code> 单独验证。</p></details>
+          <details><summary>清怪后障碍没有消失</summary><p>确认所有本阶段登记怪物都已死亡，并检查障碍坐标属于当前模板世界。</p></details>
+          <details><summary>通关后实例仍存在</summary><p>检查奖励命令语法。当前版本会隔离奖励异常并继续清理；终态实例不会出现在活动实例补全中。</p></details>
+          <details><summary>死亡后无法重新进本</summary><p>执行 <code>/ad leave</code> 清除实例绑定、恢复生存模式并返回主世界。</p></details>
+        </div>
+      </section>
+
+      <section class="doc-section" id="deploy" data-search="GitHub Pages deploy actions workflow push repository settings">
+        <div class="section-heading"><span>14</span><div><p>DELIVERY</p><h2>部署到 GitHub Pages</h2></div></div>
+        <p class="lead">站点是纯静态文件，不需要构建工具。仓库内已包含 GitHub Actions 工作流，推送到 <code>main</code> 后自动发布 <code>docs-site/</code>。</p>
+        <ol class="steps compact-steps"><li><span>1</span><div><strong>创建 GitHub 仓库</strong><p>例如 <code>AusDungeon</code>。</p></div></li><li><span>2</span><div><strong>推送当前项目</strong><p>使用下方命令初始化并推送。</p></div></li><li><span>3</span><div><strong>开启 Pages</strong><p>Settings → Pages → Source 选择 <b>GitHub Actions</b>。</p></div></li><li><span>4</span><div><strong>等待部署</strong><p>Actions 中的 Deploy documentation to GitHub Pages 完成后即可访问。</p></div></li></ol>
+        <div class="code-block"><div class="code-title"><span>首次推送</span><button class="copy-button">复制</button></div><pre><code>git init
+git add .
+git commit -m "Initial AusDungeon release and documentation"
+git branch -M main
+git remote add origin https://github.com/YOUR_NAME/AusDungeon.git
+git push -u origin main</code></pre></div>
+        <div class="code-block"><div class="code-title"><span>后续更新</span><button class="copy-button">复制</button></div><pre><code>git add .
+git commit -m "Update AusDungeon documentation"
+git push</code></pre></div>
+        <div class="notice"><strong>正式域名</strong><p>正式文档地址为 <code>https://adoc.thispy.top/</code>。修改 <code>index.html</code> 中的 GitHub 链接为你的实际仓库地址。</p></div>
+      </section>
+
+      <section class="doc-section" id="limits" data-search="限制 roadmap 一期">
+        <div class="section-heading"><span>15</span><div><p>SCOPE</p><h2>一期限制</h2></div></div>
+        <ul class="limit-list"><li>仅支持线性阶段，不包含分支路线。</li><li>游戏内编辑器覆盖基础字段，Boss 标记等高级项需编辑 YAML。</li><li>不包含评分、评级、奖励箱品质与断线重连。</li><li>实例世界使用文件复制，大型模板世界会增加创建延迟。</li><li>WorldEdit / WorldGuard 是兼容依赖，区域编辑由 AD 自己完成。</li></ul>
+      </section>
+
+      <footer><div><strong>AusDungeon</strong><span>Documentation v1.0.0</span></div><p>Built for Paper 1.21.8 · Java 21</p></footer>
+    </main>
+
+    <aside class="toc" aria-label="本页目录"><strong>本页内容</strong><nav id="tocNav"></nav></aside>
+  </div>
+  <div class="search-results" id="searchResults" hidden></div>
+  <script src="/assets/app.js"></script>
+</body>
+</html>
