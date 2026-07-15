@@ -23,7 +23,7 @@
         <input id="searchInput" type="search" placeholder="搜索文档…" autocomplete="off">
         <kbd>/</kbd>
       </label>
-      <a class="icon-button" id="githubLink" href="https://github.com/YOUR_NAME/AusDungeon" target="_blank" rel="noreferrer" aria-label="GitHub 仓库" title="GitHub 仓库">GH</a>
+      <a class="icon-button" id="githubLink" href="https://github.com/Irenare404/adoc" target="_blank" rel="noreferrer" aria-label="GitHub 仓库" title="GitHub 仓库">GH</a>
       <button class="icon-button" id="themeButton" aria-label="切换主题" title="切换主题">◐</button>
     </div>
   </header>
@@ -260,13 +260,13 @@ failed-subtitle: "&lt;gray&gt;Reason: {reason}&lt;/gray&gt;"</code></pre></div>
 
       <section class="doc-section" id="deploy" data-search="GitHub Pages deploy actions workflow push repository settings">
         <div class="section-heading"><span>14</span><div><p>DELIVERY</p><h2>部署到 GitHub Pages</h2></div></div>
-        <p class="lead">站点是纯静态文件，不需要构建工具。仓库内已包含 GitHub Actions 工作流，推送到 <code>main</code> 后自动发布 <code>docs-site/</code>。</p>
+        <p class="lead">站点是独立的纯静态仓库，不需要构建工具。推送到 <code>main</code> 后，仓库自身的 GitHub Actions 工作流会自动发布站点根目录。</p>
         <ol class="steps compact-steps"><li><span>1</span><div><strong>创建 GitHub 仓库</strong><p>例如 <code>AusDungeon</code>。</p></div></li><li><span>2</span><div><strong>推送当前项目</strong><p>使用下方命令初始化并推送。</p></div></li><li><span>3</span><div><strong>开启 Pages</strong><p>Settings → Pages → Source 选择 <b>GitHub Actions</b>。</p></div></li><li><span>4</span><div><strong>等待部署</strong><p>Actions 中的 Deploy documentation to GitHub Pages 完成后即可访问。</p></div></li></ol>
         <div class="code-block"><div class="code-title"><span>首次推送</span><button class="copy-button">复制</button></div><pre><code>git init
 git add .
 git commit -m "Initial AusDungeon release and documentation"
 git branch -M main
-git remote add origin https://github.com/YOUR_NAME/AusDungeon.git
+git remote add origin https://github.com/Irenare404/adoc.git
 git push -u origin main</code></pre></div>
         <div class="code-block"><div class="code-title"><span>后续更新</span><button class="copy-button">复制</button></div><pre><code>git add .
 git commit -m "Update AusDungeon documentation"
