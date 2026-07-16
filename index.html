@@ -195,8 +195,10 @@
         <div class="code-block"><div class="code-title"><span>plugins/AusDungeon/config.yml</span><button class="copy-button">复制</button></div><pre><code>return-world: world
 return-delay-seconds: 5
 keep-inventory-on-dungeon-death: true
+protect-instance-worlds: true
 debug: false</code></pre></div>
-        <div class="notice"><strong>阶段结束剧情</strong><p>在阶段中配置 <code>end-story.freeze-seconds</code>、<code>line-interval-ticks</code> 和 <code>lines</code>。20 ticks 等于 1 秒，台词支持 MiniMessage 颜色标签。</p></div><div class="field-list"><div><code>return-world</code><span>结束后传回的世界</span></div><div><code>return-delay-seconds</code><span>通关/失败到销毁的延迟秒数</span></div><div><code>keep-inventory-on-dungeon-death</code><span>副本死亡保留背包和经验</span></div><div><code>debug</code><span>调试开关</span></div></div>
+        <div class="notice"><strong>阶段结束剧情</strong><p>在阶段中配置 <code>end-story.freeze-seconds</code>、<code>line-interval-ticks</code> 和 <code>lines</code>。20 ticks 等于 1 秒，台词支持 MiniMessage 颜色标签。</p></div><div class="field-list"><div><code>return-world</code><span>结束后传回的世界</span></div><div><code>return-delay-seconds</code><span>通关/失败到销毁的延迟秒数</span></div><div><code>keep-inventory-on-dungeon-death</code><span>副本死亡保留背包和经验</span></div><div><code>protect-instance-worlds</code><span>内置保护动态副本世界</span></div><div><code>debug</code><span>调试开关</span></div></div>
+        <div class="notice important"><strong>实例地图保护</strong><p>WorldGuard 区域数据保存在插件数据目录中，模板世界复制为新实例时不会自动复制这些区域。开启 <code>protect-instance-worlds</code> 后，AusDungeon 会直接禁止实例内的破坏、放置、桶操作、船只与展示实体放置，且不依赖 WorldGuard。</p></div>
       </section>
 
       <section class="doc-section" id="dungeons" data-search="dungeons yaml stages trigger region spawn mobs barriers rewards boss-stage next-stage">
@@ -291,10 +293,10 @@ git push</code></pre></div>
 
       <section class="doc-section" id="limits" data-search="限制 roadmap 一期">
         <div class="section-heading"><span>15</span><div><p>SCOPE</p><h2>一期限制</h2></div></div>
-        <ul class="limit-list"><li>仅支持线性阶段，不包含分支路线。</li><li>游戏内编辑器覆盖基础字段，Boss 标记等高级项需编辑 YAML。</li><li>不包含评分、评级、奖励箱品质与断线重连。</li><li>实例世界使用文件复制，大型模板世界会增加创建延迟。</li><li>WorldEdit / WorldGuard 是兼容依赖，区域编辑由 AD 自己完成。</li></ul>
+        <ul class="limit-list"><li>仅支持线性阶段，不包含分支路线。</li><li>游戏内编辑器覆盖基础字段，Boss 标记等高级项需编辑 YAML。</li><li>不包含评分、评级、奖励箱品质与断线重连。</li><li>实例世界使用文件复制，大型模板世界会增加创建延迟。</li><li>WorldEdit / WorldGuard 是兼容依赖；动态实例的基础地图保护由 AD 自己完成。</li></ul>
       </section>
 
-      <footer><div><strong>AusDungeon</strong><span>Documentation v1.0.0</span></div><p>Built for Paper 1.21.x · Java 21+</p></footer>
+      <footer><div><strong>AusDungeon</strong><span>Documentation v1.0.0 · Author Liyao</span></div><p>Built for Paper 1.21.x · Java 21+</p></footer>
     </main>
 
     <aside class="toc" aria-label="本页目录"><strong>本页内容</strong><nav id="tocNav"></nav></aside>
